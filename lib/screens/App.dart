@@ -9,58 +9,64 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Lista de Churrasqueiras')),
-      body: FutureBuilder(
-        future: Provider.of<ReservationProvider>(context, listen: false).init(),
-        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Erro ao inicializar o banco de dados'),
-            );
-          } else {
-            return Consumer<ReservationProvider>(
-              builder: (context, reservationProvider, child) {
-                reservationProvider.getAllReservations();
-                List<Reservation> reservations =
-                    reservationProvider.reservations;
-
-                return ListView.builder(
-                  itemCount: reservations.length,
-                  itemBuilder: (context, index) {
-                    Reservation reservation = reservations[index];
-
-                    return ListTile(
-                      title: Text(reservation.title),
-                      subtitle:
-                          Text('Capacidade Máxima: ${reservation.maxPeople}'),
-                      trailing: ElevatedButton(
-                        onPressed: () {
-                          if (reservation.reserved == 0) {
-                            reservationProvider
-                                .reserveReservation(reservation);
-                            print(reservation.reserved);
-                          } else {
-                            reservationProvider
-                                .unreserveReservation(reservation);
-                            print(reservation.reserved);
-                          }
-                        },
-                        child:
-                            Text(reservation.reserved == 1 ? 'Reserved' : 'Reserve'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: reservation.reserved == 1 ? Colors.red : Colors.green,
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-            );
-          }
-        },
+      appBar: AppBar(
+        title: const Text('Lista de Churrasqueiras'),
+        centerTitle: true,
       ),
+      body: futureBuilder(context),
+    );
+  }
+
+  Widget futureBuilder(BuildContext context){
+    return  FutureBuilder(
+      future: Provider.of<ReservationProvider>(context, listen: false).init(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Center(
+            child: Text('Erro ao inicializar o banco de dados'),
+          );
+        } else {
+          return consumer();
+        }
+      },
+    );
+  }
+
+  Widget consumer() {
+    return Consumer<ReservationProvider>(
+      builder: (context, reservationProvider, child) {
+        reservationProvider.getAllReservations();
+        List<Reservation> reservations = reservationProvider.reservations;
+
+        return ListView.builder(
+          itemCount: reservations.length,
+          itemBuilder: (context, index) {
+            Reservation reservation = reservations[index];
+
+            return ListTile(
+              title: Text(reservation.title),
+              subtitle: Text('Capacidade Máxima: ${reservation.maxPeople}'),
+              trailing: ElevatedButton(
+                onPressed: () async {
+                  if (reservation.reserved == false) {
+                    await reservationProvider.reserveReservation(reservation);
+                  } else {
+                    await reservationProvider.unreserveReservation(reservation);
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      reservation.reserved == true ? Colors.red : Colors.green,
+                ),
+                child: Text(
+                    reservation.reserved == true ? 'Reservado' : 'Reservar'),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
