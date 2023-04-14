@@ -4,20 +4,22 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'dart:async';
 
+import '../models/reservation.dart';
+
 class ReservationDbProvider {
   late Database db;
 
-  ReservationDbProvider()  {
-     init();
-  }
+  /*ReservationDbProvider() {
+    init();
+  }*/
 
-  void init() async {
+   init() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, "reservation.db");
 
     db = await openDatabase(path, version: 1,
         onCreate: (Database newDb, int version) {
-      newDb.execute("""
+          newDb.execute("""
               CREATE TABLE Reservation
               (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,11 +28,19 @@ class ReservationDbProvider {
                 reserved INTEGER
               )
         """);
-    });
+        });
     final isEmpty = await reservationDbProvider.isReservationTableEmpty();
     if (isEmpty) {
       createReservations();
     }
+  }
+
+  Future<List<Reservation>> getAllReservations() async {
+    final maps = await  db.query('Reservation');
+    return List.generate(maps.length, (i) {
+      final reservationMap = maps[i];
+      return Reservation.fromMap(reservationMap);
+    });
   }
 
   Future<bool> isReservationTableEmpty() async {
@@ -58,7 +68,6 @@ class ReservationDbProvider {
       },
     );
   }
-
 }
 
 final reservationDbProvider = ReservationDbProvider();

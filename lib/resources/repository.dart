@@ -8,11 +8,8 @@ class Repository{
   }
 
   Future<List<Reservation>> getAllReservations() async {
-    final maps = await  reservationDbProvider.db.query('Reservation');
-    return List.generate(maps.length, (i) {
-      final reservationMap = maps[i];
-      return Reservation.fromMap(reservationMap);
-    });
+    final maps = await reservationDbProvider.getAllReservations();
+    return maps;
   }
 
   Future<int> updateReservation(Reservation reservation) async {

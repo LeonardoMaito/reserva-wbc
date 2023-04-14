@@ -10,6 +10,10 @@ class ReservationProvider with ChangeNotifier{
   List<Reservation> _reservations = [];
   Reservation? _selectedReservation;
 
+  Future<void> init() async {
+    await reservationDbProvider.init();
+  }
+
   List<Reservation> get reservations => _reservations;
   Reservation? get selectedReservation => _selectedReservation;
 
@@ -23,4 +27,10 @@ class ReservationProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  Future<void> unreserveReservation(Reservation reservation) async{
+    await _repository.unreserveReservation(reservation.id!);
+    notifyListeners();
+  }
+
 }
+
