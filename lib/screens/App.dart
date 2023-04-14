@@ -12,6 +12,8 @@ class App extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Lista de Churrasqueiras'),
         centerTitle: true,
+        backgroundColor: Colors.orangeAccent,
+        titleTextStyle: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold ),
       ),
       body: futureBuilder(context),
     );
@@ -45,24 +47,31 @@ class App extends StatelessWidget {
           itemBuilder: (context, index) {
             Reservation reservation = reservations[index];
 
-            return ListTile(
-              title: Text(reservation.title),
-              subtitle: Text('Capacidade Máxima: ${reservation.maxPeople}'),
-              trailing: ElevatedButton(
-                onPressed: () async {
-                  if (reservation.reserved == false) {
-                    await reservationProvider.reserveReservation(reservation);
-                  } else {
-                    await reservationProvider.unreserveReservation(reservation);
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      reservation.reserved == true ? Colors.red : Colors.green,
+            return Column(
+              children: [
+                ListTile(
+                  title: Text(reservation.title),
+                  subtitle: Text('Capacidade Máxima: ${reservation.maxPeople}'),
+                  trailing: ElevatedButton(
+                    onPressed: () async {
+                      if (reservation.reserved == false) {
+                        await reservationProvider.reserveReservation(reservation);
+                      } else {
+                        await reservationProvider.unreserveReservation(reservation);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          reservation.reserved == true ? Colors.grey : Colors.orange,
+                      fixedSize:const Size(100, 35) ,
+                      textStyle: const TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    child: Text(
+                        reservation.reserved == true ? 'Reservado' : 'Reservar'),
+                  ),
                 ),
-                child: Text(
-                    reservation.reserved == true ? 'Reservado' : 'Reservar'),
-              ),
+                const Divider(height: 6, thickness: 2,),
+              ],
             );
           },
         );
