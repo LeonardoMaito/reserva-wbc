@@ -32,5 +32,15 @@ class ReservationProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  Future<void> insertReservation(Reservation reservation) async{
+    await _repository.insertReservation(reservation);
+    notifyListeners();
+  }
+
+  Future<void> deleteReservation(Reservation reservation) async{
+    await _repository.deleteReservation(reservation.id!);
+    notifyListeners();
+  }
+
 }
 
