@@ -63,6 +63,8 @@ class App extends StatelessWidget {
                       Reservation reservation =  Reservation(null, quantity, _titleController.text, false);
                       await reservationProvider!.insertReservation(reservation);
                       Navigator.of(context).pop();
+                      _titleController.clear();
+                      _quantityController.clear();
                     },
                   ),
                 ],
