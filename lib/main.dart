@@ -7,7 +7,7 @@ void main() {
   runApp(
   ChangeNotifierProvider(
     create: (context) => ReservationProvider(),
-    child: const MaterialApp(
+    child:  MaterialApp(
       home: App(),
     ),
    ),

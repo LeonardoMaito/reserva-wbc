@@ -12,37 +12,50 @@ class CardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(left: 5, right: 5),
-      decoration: new BoxDecoration(
+      decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.5),
             blurRadius: 5.0,
             spreadRadius: 0,
-            offset: Offset(5, 5),
+            offset: const Offset(5, 5),
           ),
         ],
       ),
       child: Card(
+
         margin: const EdgeInsets.only(top: 5.0),
         shadowColor: Colors.orange,
         child: Column(
+
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                reservation.title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+              padding: const EdgeInsets.only(left: 45, top: 3, bottom: 3),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      reservation.title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+
+                      ),
+                    ),
+                  ),
+                  IconButton(onPressed: () async{
+                    await reservationProvider.deleteReservation(reservation);
+                  }, icon: const Icon(Icons.close), color: Colors.red,
+                  ),
+                ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(3.0),
               child: Text(
                 'Capacidade Máxima: ${reservation.maxPeople}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                 ),
               ),
@@ -54,7 +67,7 @@ class CardWidget extends StatelessWidget {
                       'https://clubecirculo.com.br/wp-content/uploads/2022/03/DSC0190.jpg')),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(3.0),
               child: ElevatedButton(
                 onPressed: () async {
                   if (reservation.reserved == false) {
