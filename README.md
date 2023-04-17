@@ -24,12 +24,15 @@ Ambas as versões foram criadas com SQLFlite, utilizando o padrão de design Rep
 Também é possível executar um 'git pull' em um projeto previamente criado e rodar a partir desse.
 
 Os projetos utilizam das seguintes bibliotecas:
-
+```
 sqflite: ^2.2.6
 
 path_provider: ^2.0.13
 
 provider: ^6.0.5
-
-** O projeto foi criado e testado utilizando a API 33 do Android, dessa forma, é possível que versões anteriores da API não rodem de forma adequada.
- Para garantir que seu projeto esteja rodando na versão API 33, navegue até `seu_projeto/android/app/build.gradle`  adicione `compileSdkVersion 33` dentro da tag `android{}` **
+```
+**O projeto foi criado e testado utilizando a API 33 do Android, dessa forma, é possível que versões anteriores da API não rodem de forma adequada.
+ Para garantir que seu projeto esteja rodando na versão API 33, navegue até `seu_projeto/android/app/build.gradle`  adicione `compileSdkVersion 33` dentro da tag `android{}`
+ 
+ Certifique-se que possue o Java instalado em seu computador.
+ **
