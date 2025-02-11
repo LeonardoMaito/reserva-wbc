@@ -1,4 +1,4 @@
-# wbc-reservation
+# WBC - Challenge
 
 ## Description
 
